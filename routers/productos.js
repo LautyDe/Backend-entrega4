@@ -14,7 +14,7 @@ const notFound = { error: "Producto no encontrado" };
 
 router.get("/", async (req, res) => {
     console.log(`getAll req recibida con exito`);
-    const arrayProductos = await productos.getById();
+    const arrayProductos = await productos.getAll();
     !arrayProductos && res.status(404).json(notFound);
     res.status(200).json(arrayProductos);
 });
@@ -22,9 +22,9 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
     console.log(`getById req recibida con exito`);
     const id = parseInt(req.params.id);
-    const producto = await productos.getAll(id);
+    const producto = await productos.getById(id);
     !producto && res.status(404).json(notFound);
-    res.status(200).json(arrayProductos);
+    res.status(200).json(producto);
 });
 
 router.post("/", async (req, res) => {
@@ -36,11 +36,21 @@ router.post("/", async (req, res) => {
     res.status(201).json(data);
 });
 
-router.get("/", async (req, res) => {
-    console.log(`Get req recibida con exito`);
-    const arrayProductos = await productos.getAll();
+router.put("/:id", async (req, res) => {
+    console.log(`put req recibida con exito`);
+    const id = parseInt(req.params.id);
+    const producto = await productos.getAll();
     !arrayProductos && res.status(404).json(notFound);
     res.status(200).json(arrayProductos);
+});
+
+router.delete("/:id", async (req, res) => {
+    console.log(`delete req recibida con exito`);
+    const id = parseInt(req.params.id);
+    const producto = await productos.getById(id);
+    const eliminarProducto = await productos.deleteById(id);
+    !producto && res.status(404).json(notFound);
+    res.status(200).json(producto);
 });
 
 module.exports = router;
