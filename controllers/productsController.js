@@ -122,6 +122,34 @@ class Contenedor {
         }
     }
 
+    async modify(id, contenido) {
+        try {
+            /* verifico que exista el documento */
+            if (this.exists(this.archivo)) {
+                let data = await this.readFile(this.archivo);
+                /* uso filter para buscar el producto con el id que queramos */
+                let dataId = data.filter(item => item.id === id);
+                if (dataId.length === 0) {
+                    /* si no se encuentra el producto lanzo un error */
+                    throw new Error(
+                        `No se encontro el producto con el id solicitado`
+                    );
+                } else {
+                    /* elimino el produco a editar */
+                    data = data.filter(item => item.id !== id);
+                    /* agrego uno nuevo con el mismo id */
+                    dataId = { id: id, ...contenido };
+                    data.push(dataId);
+                    this.writeFile(this.archivo, data);
+                    console.log(`Se modifico el producto con el id ${id}`);
+                    return dataId;
+                }
+            }
+        } catch (error) {
+            console.log(`Error modificando el producto: ${error.message}`);
+        }
+    }
+
     async deleteById(id) {
         /* chequeo si existe el documento */
         try {

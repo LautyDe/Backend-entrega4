@@ -39,9 +39,10 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
     console.log(`put req recibida con exito`);
     const id = parseInt(req.params.id);
-    const producto = await productos.getAll();
-    !arrayProductos && res.status(404).json(notFound);
-    res.status(200).json(arrayProductos);
+    const data = req.body;
+    const productoEditado = await productos.modify(id, data);
+    !productoEditado && res.status(404).json(notFound);
+    res.status(200).json(productoEditado);
 });
 
 router.delete("/:id", async (req, res) => {
