@@ -1,18 +1,19 @@
-const { error } = require("console");
 const express = require("express");
+const bp = require("body-parser");
+const routers = require("./routers");
 const app = express();
 const PORT = 8080;
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+/* middlewares incorporados */
+app.use(bp.json());
+app.use(bp.urlencoded({ extended: true }));
+
+app.use("/api", routers);
 
 const server = app.listen(PORT, () => {
     console.log(
         `Servidor http escuchando en el puerto ${server.address().port}`
     );
+    console.log(`http://localhost:${server.address().port}`);
 });
 server.on("error", error => console.log(`Error en servidor: ${error}`));
-
-app.get("/", (req, res) => {
-    res.send("Hola mundo!");
-});
