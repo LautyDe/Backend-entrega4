@@ -8,6 +8,10 @@ const PORT = 8080;
 app.use(bp.json());
 app.use(bp.urlencoded({ extended: true }));
 
+/* visibilizo la carpeta public */
+
+app.use("/api/static", express.static(__dirname + "/public"));
+
 app.use("/api", routers);
 
 const server = app.listen(PORT, () => {
